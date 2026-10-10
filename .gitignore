@@ -1,0 +1,54 @@
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# ML experiment outputs
+mlruns/
+lightning_logs/
+wandb/
+
+# Local databases
+*.sqlite3
+*.db
+
+# Common generated model files
+# Uncomment these if you do not want to upload model weights
+# *.pt
+# *.pth
+# *.h5
+# *.keras
+# *.pkl
+# *.joblib

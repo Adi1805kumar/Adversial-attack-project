@@ -1,0 +1,208 @@
+Time passed [minutes]: 0.00.     execution date (d/m/y): 01/10/2026, 22:09:00
+Time passed [minutes]: 0.00.     Dataset name: MNIST
+Time passed [minutes]: 0.00.     checkpoints folder: .\checkpoints\MNIST
+Time passed [minutes]: 0.00.     save checkpoints: True
+Time passed [minutes]: 0.00.     load checkpoints: False
+Time passed [minutes]: 0.00.     results folder: .\results_folder\MNIST
+Time passed [minutes]: 0.00.     show results:  False
+Time passed [minutes]: 0.00.     save results:  True
+Time passed [minutes]: 0.00.     execution device: cpu
+
+
+
+Time passed [minutes]: 0.00.     Experiment 1 on MNIST-NET
+Time passed [minutes]: 0.00.     Network architecture:
+Time passed [minutes]: 0.00.     CNNMNISTNet(
+  (cnn): Sequential(
+    (0): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(32, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (3): ReLU()
+    (4): Dropout(p=0.05, inplace=False)
+    (5): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (6): ReLU()
+    (7): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (8): ReLU()
+    (9): Dropout(p=0.05, inplace=False)
+    (10): Conv2d(256, 100, kernel_size=(4, 4), stride=(1, 1))
+    (11): ReLU()
+  )
+  (lin): Sequential(
+    (0): Linear(in_features=1600, out_features=100, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=100, out_features=10, bias=True)
+  )
+)
+Time passed [minutes]: 0.00.     
+Full Train(training on all training dataset) with selected hp: {'lr': 0.0003, 'batch_size': 128, 'lr_scheduler_gamma': 0.95}
+Time passed [minutes]: 0.74.       Batch 100/469 - Loss: 0.2958, Acc: 0.93
+Time passed [minutes]: 1.47.       Batch 200/469 - Loss: 0.1620, Acc: 0.95
+Time passed [minutes]: 2.22.       Batch 300/469 - Loss: 0.0549, Acc: 0.99
+Time passed [minutes]: 3.04.       Batch 400/469 - Loss: 0.0982, Acc: 0.98
+Time passed [minutes]: 3.57.       Batch 469/469 - Loss: 0.0723, Acc: 0.98
+Time passed [minutes]: 3.57.     Epoch 1. Train accuracy: 0.91,  Train loss:  0.28
+
+Time passed [minutes]: 4.24.       Batch 100/469 - Loss: 0.0297, Acc: 0.99
+Time passed [minutes]: 5.08.       Batch 200/469 - Loss: 0.1069, Acc: 0.97
+Time passed [minutes]: 5.83.       Batch 300/469 - Loss: 0.0329, Acc: 0.98
+Time passed [minutes]: 6.53.       Batch 400/469 - Loss: 0.0709, Acc: 0.97
+Time passed [minutes]: 6.99.       Batch 469/469 - Loss: 0.0821, Acc: 0.96
+Time passed [minutes]: 6.99.     Epoch 2. Train accuracy: 0.98,  Train loss:  0.07
+
+Time passed [minutes]: 7.66.       Batch 100/469 - Loss: 0.0483, Acc: 0.98
+Time passed [minutes]: 8.25.       Batch 200/469 - Loss: 0.0770, Acc: 0.98
+Time passed [minutes]: 8.81.       Batch 300/469 - Loss: 0.0402, Acc: 0.99
+Time passed [minutes]: 9.38.       Batch 400/469 - Loss: 0.0325, Acc: 0.99
+Time passed [minutes]: 10.10.       Batch 469/469 - Loss: 0.0531, Acc: 0.99
+Time passed [minutes]: 10.10.     Epoch 3. Train accuracy: 0.99,  Train loss:  0.04
+
+Time passed [minutes]: 11.26.       Batch 100/469 - Loss: 0.0299, Acc: 0.98
+Time passed [minutes]: 12.25.       Batch 200/469 - Loss: 0.0431, Acc: 0.99
+Time passed [minutes]: 13.26.       Batch 300/469 - Loss: 0.0274, Acc: 0.99
+Time passed [minutes]: 14.33.       Batch 400/469 - Loss: 0.0329, Acc: 0.99
+Time passed [minutes]: 15.05.       Batch 469/469 - Loss: 0.0799, Acc: 0.98
+Time passed [minutes]: 15.05.     Epoch 4. Train accuracy: 0.99,  Train loss:  0.03
+
+Time passed [minutes]: 16.22.       Batch 100/469 - Loss: 0.0050, Acc: 1.00
+Time passed [minutes]: 17.22.       Batch 200/469 - Loss: 0.0196, Acc: 0.99
+Time passed [minutes]: 18.25.       Batch 300/469 - Loss: 0.0280, Acc: 0.99
+Time passed [minutes]: 19.25.       Batch 400/469 - Loss: 0.0060, Acc: 1.00
+Time passed [minutes]: 19.83.       Batch 469/469 - Loss: 0.0049, Acc: 1.00
+Time passed [minutes]: 19.83.     Epoch 5. Train accuracy: 0.99,  Train loss:  0.02
+
+Time passed [minutes]: 19.83.     training selected hyperparams: {'lr': 0.0003, 'batch_size': 128, 'lr_scheduler_gamma': 0.95}
+Time passed [minutes]: 21.30.     %accuracy on attack: 0.022218528368794344 with hp: {'epsilon': 0.3}
+Time passed [minutes]: 21.30.     FGSM attack selected hyperparams: {'epsilon': 0.3}
+Time passed [minutes]: 47.70.     %accuracy on attack: 0.0026595744680850686 with hp: {'alpha': 0.01, 'steps': 30, 'epsilon': 0.3}
+Time passed [minutes]: 47.70.     PGD attack selected hyperparams: {'alpha': 0.01, 'steps': 30, 'epsilon': 0.3}
+Time passed [minutes]: 62.89.     TEST SCORES of MNIST-NET:
+Time passed [minutes]: 62.89.     accuracy on test:                         0.9894
+Time passed [minutes]: 62.89.     accuracy on FGSM constructed examples:    0.02200000000000002
+Time passed [minutes]: 62.89.     accuracy on PGD constructed examples:     9.999999999998899e-05
+Time passed [minutes]: 62.89.     save network to .\checkpoints\MNIST\MNIST-NET.pt
+
+
+
+Time passed [minutes]: 62.89.     Experiment 2 on MNIST-NET
+Time passed [minutes]: 62.89.     
+Full Train(training on all training dataset) with selected hp: {'lr': 0.0003, 'batch_size': 128, 'lr_scheduler_gamma': 0.95, 'epsilon': 0.3}
+Time passed [minutes]: 64.82.       Batch 100/469 - Loss: 2.2717, Acc: 0.22
+Time passed [minutes]: 66.69.       Batch 200/469 - Loss: 1.7128, Acc: 0.79
+Time passed [minutes]: 68.54.       Batch 300/469 - Loss: 0.6983, Acc: 0.92
+Time passed [minutes]: 70.40.       Batch 400/469 - Loss: 0.5733, Acc: 0.95
+Time passed [minutes]: 71.63.       Batch 469/469 - Loss: 0.5594, Acc: 0.93
+Time passed [minutes]: 71.63.     Epoch 1. Train adversarial accuracy: 0.518190.Train accuracy: 0.67,  Train loss:  1.33
+
+Time passed [minutes]: 73.46.       Batch 100/469 - Loss: 0.3497, Acc: 0.94
+Time passed [minutes]: 75.28.       Batch 200/469 - Loss: 0.3054, Acc: 0.95
+Time passed [minutes]: 77.10.       Batch 300/469 - Loss: 0.4997, Acc: 0.95
+Time passed [minutes]: 78.90.       Batch 400/469 - Loss: 0.3220, Acc: 0.98
+Time passed [minutes]: 80.14.       Batch 469/469 - Loss: 0.4280, Acc: 0.99
+Time passed [minutes]: 80.14.     Epoch 2. Train adversarial accuracy: 0.836715.Train accuracy: 0.95,  Train loss:  0.48
+
+Time passed [minutes]: 82.06.       Batch 100/469 - Loss: 0.4867, Acc: 0.97
+Time passed [minutes]: 83.89.       Batch 200/469 - Loss: 0.3009, Acc: 0.98
+Time passed [minutes]: 85.68.       Batch 300/469 - Loss: 0.7909, Acc: 0.95
+Time passed [minutes]: 87.53.       Batch 400/469 - Loss: 1.0838, Acc: 0.97
+Time passed [minutes]: 88.83.       Batch 469/469 - Loss: 0.1538, Acc: 0.97
+Time passed [minutes]: 88.83.     Epoch 3. Train adversarial accuracy: 0.880503.Train accuracy: 0.97,  Train loss:  0.35
+
+Time passed [minutes]: 90.73.       Batch 100/469 - Loss: 0.1719, Acc: 0.98
+Time passed [minutes]: 92.62.       Batch 200/469 - Loss: 0.3380, Acc: 0.96
+Time passed [minutes]: 94.52.       Batch 300/469 - Loss: 0.1777, Acc: 0.98
+Time passed [minutes]: 96.40.       Batch 400/469 - Loss: 0.3860, Acc: 0.97
+Time passed [minutes]: 97.68.       Batch 469/469 - Loss: 0.2772, Acc: 1.00
+Time passed [minutes]: 97.68.     Epoch 4. Train adversarial accuracy: 0.903257.Train accuracy: 0.98,  Train loss:  0.29
+
+Time passed [minutes]: 99.56.       Batch 100/469 - Loss: 0.1568, Acc: 0.98
+Time passed [minutes]: 101.40.       Batch 200/469 - Loss: 0.2088, Acc: 0.98
+Time passed [minutes]: 103.28.       Batch 300/469 - Loss: 0.1131, Acc: 0.98
+Time passed [minutes]: 105.15.       Batch 400/469 - Loss: 0.5347, Acc: 0.99
+Time passed [minutes]: 106.43.       Batch 469/469 - Loss: 0.5359, Acc: 0.98
+Time passed [minutes]: 106.43.     Epoch 5. Train adversarial accuracy: 0.912086.Train accuracy: 0.98,  Train loss:  0.26
+
+Time passed [minutes]: 108.25.       Batch 100/469 - Loss: 0.3345, Acc: 0.97
+Time passed [minutes]: 110.01.       Batch 200/469 - Loss: 0.1287, Acc: 0.99
+Time passed [minutes]: 111.84.       Batch 300/469 - Loss: 0.2931, Acc: 0.98
+Time passed [minutes]: 113.67.       Batch 400/469 - Loss: 0.3119, Acc: 0.99
+Time passed [minutes]: 114.91.       Batch 469/469 - Loss: 0.1925, Acc: 0.99
+Time passed [minutes]: 114.91.     Epoch 6. Train adversarial accuracy: 0.919604.Train accuracy: 0.98,  Train loss:  0.24
+
+Time passed [minutes]: 116.74.       Batch 100/469 - Loss: 0.1342, Acc: 1.00
+Time passed [minutes]: 118.56.       Batch 200/469 - Loss: 0.2004, Acc: 0.98
+Time passed [minutes]: 120.40.       Batch 300/469 - Loss: 0.2318, Acc: 0.99
+Time passed [minutes]: 122.26.       Batch 400/469 - Loss: 0.1669, Acc: 0.98
+Time passed [minutes]: 123.53.       Batch 469/469 - Loss: 0.2306, Acc: 0.96
+Time passed [minutes]: 123.53.     Epoch 7. Train adversarial accuracy: 0.926173.Train accuracy: 0.98,  Train loss:  0.22
+
+Time passed [minutes]: 125.37.       Batch 100/469 - Loss: 0.1225, Acc: 0.99
+Time passed [minutes]: 127.21.       Batch 200/469 - Loss: 0.1141, Acc: 1.00
+Time passed [minutes]: 129.05.       Batch 300/469 - Loss: 0.2460, Acc: 0.97
+Time passed [minutes]: 130.91.       Batch 400/469 - Loss: 0.1811, Acc: 1.00
+Time passed [minutes]: 132.16.       Batch 469/469 - Loss: 0.1123, Acc: 0.99
+Time passed [minutes]: 132.16.     Epoch 8. Train adversarial accuracy: 0.934940.Train accuracy: 0.99,  Train loss:  0.19
+
+Time passed [minutes]: 135.16.       Batch 100/469 - Loss: 0.1193, Acc: 0.99
+Time passed [minutes]: 141.18.       Batch 200/469 - Loss: 0.0826, Acc: 0.99
+Time passed [minutes]: 146.38.       Batch 300/469 - Loss: 0.1008, Acc: 1.00
+Time passed [minutes]: 148.12.       Batch 400/469 - Loss: 0.0822, Acc: 0.99
+Time passed [minutes]: 149.39.       Batch 469/469 - Loss: 0.1198, Acc: 0.97
+Time passed [minutes]: 149.39.     Epoch 9. Train adversarial accuracy: 0.945857.Train accuracy: 0.98,  Train loss:  0.16
+
+Time passed [minutes]: 151.16.       Batch 100/469 - Loss: 0.1805, Acc: 0.99
+Time passed [minutes]: 152.95.       Batch 200/469 - Loss: 0.2081, Acc: 0.99
+Time passed [minutes]: 154.73.       Batch 300/469 - Loss: 0.1487, Acc: 0.99
+Time passed [minutes]: 156.53.       Batch 400/469 - Loss: 0.2899, Acc: 0.98
+Time passed [minutes]: 157.77.       Batch 469/469 - Loss: 0.1884, Acc: 0.97
+Time passed [minutes]: 157.77.     Epoch 10. Train adversarial accuracy: 0.938244.Train accuracy: 0.99,  Train loss:  0.18
+
+Time passed [minutes]: 159.54.       Batch 100/469 - Loss: 0.1094, Acc: 0.97
+Time passed [minutes]: 161.33.       Batch 200/469 - Loss: 0.3003, Acc: 0.96
+Time passed [minutes]: 163.11.       Batch 300/469 - Loss: 0.1489, Acc: 0.99
+Time passed [minutes]: 164.91.       Batch 400/469 - Loss: 0.1030, Acc: 0.98
+Time passed [minutes]: 166.14.       Batch 469/469 - Loss: 0.1207, Acc: 0.98
+Time passed [minutes]: 166.14.     Epoch 11. Train adversarial accuracy: 0.945823.Train accuracy: 0.99,  Train loss:  0.16
+
+Time passed [minutes]: 167.88.       Batch 100/469 - Loss: 0.0830, Acc: 1.00
+Time passed [minutes]: 169.67.       Batch 200/469 - Loss: 0.1745, Acc: 0.98
+Time passed [minutes]: 171.30.       Batch 300/469 - Loss: 0.1423, Acc: 0.99
+Time passed [minutes]: 173.12.       Batch 400/469 - Loss: 0.1571, Acc: 1.00
+Time passed [minutes]: 174.37.       Batch 469/469 - Loss: 0.1085, Acc: 1.00
+Time passed [minutes]: 174.37.     Epoch 12. Train adversarial accuracy: 0.950621.Train accuracy: 0.99,  Train loss:  0.15
+
+Time passed [minutes]: 176.19.       Batch 100/469 - Loss: 0.1256, Acc: 0.98
+Time passed [minutes]: 178.02.       Batch 200/469 - Loss: 0.1685, Acc: 0.98
+Time passed [minutes]: 179.85.       Batch 300/469 - Loss: 0.1726, Acc: 0.98
+Time passed [minutes]: 181.69.       Batch 400/469 - Loss: 0.1403, Acc: 0.99
+Time passed [minutes]: 182.93.       Batch 469/469 - Loss: 0.3035, Acc: 0.98
+Time passed [minutes]: 182.93.     Epoch 13. Train adversarial accuracy: 0.948644.Train accuracy: 0.99,  Train loss:  0.15
+
+Time passed [minutes]: 184.69.       Batch 100/469 - Loss: 0.1926, Acc: 0.98
+Time passed [minutes]: 186.45.       Batch 200/469 - Loss: 0.2254, Acc: 0.98
+Time passed [minutes]: 188.27.       Batch 300/469 - Loss: 0.0986, Acc: 0.99
+Time passed [minutes]: 190.03.       Batch 400/469 - Loss: 0.1867, Acc: 0.99
+Time passed [minutes]: 191.24.       Batch 469/469 - Loss: 0.1657, Acc: 0.98
+Time passed [minutes]: 191.24.     Epoch 14. Train adversarial accuracy: 0.952542.Train accuracy: 0.99,  Train loss:  0.14
+
+Time passed [minutes]: 193.02.       Batch 100/469 - Loss: 0.1033, Acc: 1.00
+Time passed [minutes]: 194.81.       Batch 200/469 - Loss: 0.0686, Acc: 0.99
+Time passed [minutes]: 196.60.       Batch 300/469 - Loss: 0.0846, Acc: 1.00
+Time passed [minutes]: 198.37.       Batch 400/469 - Loss: 0.1939, Acc: 0.97
+Time passed [minutes]: 199.61.       Batch 469/469 - Loss: 0.0592, Acc: 1.00
+Time passed [minutes]: 199.61.     Epoch 15. Train adversarial accuracy: 0.955701.Train accuracy: 0.99,  Train loss:  0.13
+
+Time passed [minutes]: 199.61.     training selected hyperparams: {'lr': 0.0003, 'batch_size': 128, 'lr_scheduler_gamma': 0.95, 'epsilon': 0.3}
+Time passed [minutes]: 200.97.     %accuracy on attack: 0.9765070921985816 with hp: {'epsilon': 0.3}
+Time passed [minutes]: 200.97.     FGSM attack selected hyperparams: {'epsilon': 0.3}
+Time passed [minutes]: 226.00.     %accuracy on attack: 0.6581892730496454 with hp: {'alpha': 0.01, 'steps': 30, 'epsilon': 0.3}
+Time passed [minutes]: 226.00.     PGD attack selected hyperparams: {'alpha': 0.01, 'steps': 30, 'epsilon': 0.3}
+Time passed [minutes]: 241.45.     TEST SCORES of MNIST-NET with FGSM adversarial training:
+Time passed [minutes]: 241.45.     accuracy on test:                         0.9904
+Time passed [minutes]: 241.45.     accuracy on FGSM constructed examples:    0.9659
+Time passed [minutes]: 241.45.     accuracy on PGD constructed examples:     0.6486000000000001
+Time passed [minutes]: 241.45.     save network to .\checkpoints\MNIST\MNIST-NET with FGSM adversarial training.pt
+Time passed [minutes]: 241.45.     
+Full Train(training on all training dataset) with selected hp: {'lr': 0.0003, 'batch_size': 128, 'lr_scheduler_gamma': 0.95, 'alpha': 0.01, 'steps': 30, 'epsilon': 0.3}
+Time passed [minutes]: 261.24.       Batch 100/469 - Loss: 2.3017, Acc: 0.20
+Time passed [minutes]: 282.10.       Batch 200/469 - Loss: 2.2061, Acc: 0.27
+Time passed [minutes]: 302.88.       Batch 300/469 - Loss: 1.3103, Acc: 0.84
