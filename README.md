@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Deep Learning Adversarial Attacks and Resistant Learning
 based on Towards Deep Learning Models Resistant to Adversarial Attacks paper - https://arxiv.org/pdf/1706.06083.pdf.
 
@@ -50,3 +51,6 @@ parse this folder. There are also Dataloaders methods.
 management tools (Epochs, StoppingCriteria classes).
 * configs.py - this file contains all the configurations to the project - both system configurations and hyperparams. 
 It is imported only in experiments.py 
+=======
+# Adversial-attack-project
+>>>>>>> 23c6caff2a9a7659155ce16f80a99896c19dbf17
