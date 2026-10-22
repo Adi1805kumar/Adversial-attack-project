@@ -14,6 +14,7 @@ import models
 import attacks
 import configs
 import datasets
+import stickers
 
 # -----------------------------------------------------------------------------
 # Page Configuration & Styling
@@ -148,6 +149,8 @@ def load_trained_model(model_type="baseline"):
         ckpt_path = os.path.join(ckpt_dir, "CNN-TrafficSignNet.pt")
     elif model_type == "fgsm_robust":
         ckpt_path = os.path.join(ckpt_dir, "CNN-TrafficSignNet with FGSM adversarial training.pt")
+    elif model_type == "pgd_robust":
+        ckpt_path = os.path.join(ckpt_dir, "CNN-TrafficSignNet with PGD adversarial training.pt")
     else:
         ckpt_path = None
 
@@ -221,6 +224,7 @@ with st.sidebar:
         [
             "🎯 Adversarial Attack Studio",
             "🛡️ Model Defense Comparison",
+            "🏷️ Universal Sticker Attack",
             "📊 Experiment Reports & Analytics",
             "⚡ Live Experiment Runner"
         ]
@@ -318,6 +322,8 @@ if selected_page == "🎯 Adversarial Attack Studio":
         if selected_pil is not None:
             # 1. Forward Pass on Clean Input
             input_tensor = preprocess_image(selected_pil)
+            model_device = next(active_net.parameters()).device  # GPU if the model is on the GPU
+            input_tensor = input_tensor.to(model_device)
             with torch.no_grad():
                 clean_logits = active_net(input_tensor)
                 clean_probs = torch.softmax(clean_logits, dim=1).squeeze(0)
@@ -325,7 +331,7 @@ if selected_page == "🎯 Adversarial Attack Studio":
                 clean_pred_conf = float(clean_probs[clean_pred_id].item())
             
             # 2. Generate Adversarial Example
-            target_y = torch.tensor([true_label_id if true_label_id is not None else clean_pred_id])
+            target_y = torch.tensor([true_label_id if true_label_id is not None else clean_pred_id]).to(model_device)
             
             t0 = time.time()
             adv_tensor = attack_obj.perturb(input_tensor.clone(), target_y)
@@ -395,8 +401,8 @@ if selected_page == "🎯 Adversarial Attack Studio":
             st.markdown("### 📈 **Prediction Probability Distribution (Top-5 Classes)**")
             
             # Top-5 Chart
-            clean_top5 = torch.topk(clean_probs, 5)
-            adv_top5 = torch.topk(adv_probs, 5)
+            clean_top5 = torch.topk(clean_probs.detach().cpu(), 5)  # .cpu() so .numpy() works on GPU
+            adv_top5 = torch.topk(adv_probs.detach().cpu(), 5)
             
             chart_col1, chart_col2 = st.columns(2)
             
@@ -452,9 +458,10 @@ elif selected_page == "🛡️ Model Defense Comparison":
         ground_truth_id = sample_data["class_id"]
         ground_truth_name = sample_data["class_name"]
         
-        tensor_in = preprocess_image(pil_img)
+        comp_device = next(baseline_net.parameters()).device  # GPU if the models are on the GPU
+        tensor_in = preprocess_image(pil_img).to(comp_device)
         loss_fn = torch.nn.CrossEntropyLoss()
-        y_target = torch.tensor([ground_truth_id])
+        y_target = torch.tensor([ground_truth_id]).to(comp_device)
         
         # 1. Attack Baseline Model
         if "PGD" in comp_attack_type:
@@ -527,6 +534,122 @@ elif selected_page == "🛡️ Model Defense Comparison":
                 st.success(f"🛡️ **Defense Successful!** Correctly classified as: {GTSRB_CLASSES.get(pred_rob_adv, str(pred_rob_adv))}")
             else:
                 st.warning(f"⚠️ Perturbation overwhelmed defense. Predicted: {GTSRB_CLASSES.get(pred_rob_adv, str(pred_rob_adv))}")
+
+# =============================================================================
+# PAGE: UNIVERSAL STICKER ATTACK
+# =============================================================================
+elif selected_page == "🏷️ Universal Sticker Attack":
+    st.markdown('<div class="main-title">🏷️ Universal Sticker Attack</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Place simple black / white stickers on a sign and watch the prediction change. '
+                'The same sticker location is applied to every sign, so no per-image perturbation is needed '
+                '(after Etim &amp; Szefer, 2025).</div>', unsafe_allow_html=True)
+
+    sticker_samples = get_sample_images()
+    if not sticker_samples:
+        st.warning("GTSRB test samples not found. Please ensure data/GTSRB/testset exists.")
+    else:
+        stk_mean = (0.3403, 0.3121, 0.3214)
+        stk_std = (0.2724, 0.2608, 0.2669)
+        pgd_net, pgd_loaded, _ = load_trained_model("pgd_robust")
+        stk_models = {"Standard Baseline": baseline_net, "FGSM Adversarially Trained": robust_net}
+        if pgd_loaded:
+            stk_models["PGD Adversarially Trained"] = pgd_net
+        stk_default_hp = {"sizes": [(6, 6), (8, 8), (10, 10), (12, 12)], "region": (6, 6, 26, 26), "stride": 2}
+        stk_hp = dict(getattr(configs, "sticker_hps", {}).get("traffic_signs", stk_default_hp))
+
+        col_cfg, col_view = st.columns([1, 2], gap="medium")
+
+        with col_cfg:
+            st.markdown("### ⚙️ **Sticker Configuration**")
+            stk_model_name = st.selectbox("Target Model", list(stk_models.keys()), key="stk_model")
+            stk_net = stk_models[stk_model_name]
+            stk_device = next(stk_net.parameters()).device
+            stk_sign_key = st.selectbox("Traffic Sign", list(sticker_samples.keys()), key="stk_sign")
+            stk_variant = st.selectbox("Stickers", ["One black", "One white", "Black + White"], key="stk_variant")
+            stk_colors = {"One black": ["black"], "One white": ["white"], "Black + White": ["black", "white"]}[stk_variant]
+            stk_mode = st.radio("Placement", ["Manual", "Auto-search (universal)"], key="stk_mode")
+
+            stk_placements = []
+            if stk_mode == "Manual":
+                for i, stk_color in enumerate(stk_colors):
+                    st.markdown(f"**Sticker {i + 1} ({stk_color})**")
+                    stk_h = st.slider("Height (px)", 2, 16, 8, key=f"stk_h{i}")
+                    stk_w = st.slider("Width (px)", 2, 16, 8, key=f"stk_w{i}")
+                    stk_top = st.slider("Top (px)", 0, 32 - stk_h, min((32 - stk_h) // 2 + 8 * i, 32 - stk_h))
+                    stk_left = st.slider("Left (px)", 0, 32 - stk_w, (32 - stk_w) // 2)
+                    stk_placements.append((stk_color, stk_top, stk_left, stk_h, stk_w))
+            else:
+                st.caption("Searches the best location over all preset signs. Only signs the model already "
+                           "classifies correctly are used for the search.")
+                stk_state_key = f"stk_auto::{stk_model_name}::{stk_variant}"
+                if st.button("🔍 Search universal sticker location", key="stk_search"):
+                    with st.spinner("Searching sticker location..."):
+                        search_xs = torch.cat([preprocess_image(Image.open(v["path"]).convert("RGB"))
+                                               for v in sticker_samples.values()]).to(stk_device)
+                        search_ys = torch.tensor([v["class_id"] for v in sticker_samples.values()]).to(stk_device)
+                        searcher = stickers.UniversalSticker(stk_net, None, {**stk_hp, "colors": stk_colors},
+                                                             mean=stk_mean, std=stk_std)
+                        st.session_state[stk_state_key] = searcher.fit([(search_xs, search_ys)],
+                                                                       max_images=len(search_xs), device=stk_device)
+                stk_placements = st.session_state.get(stk_state_key, [])
+                if not stk_placements:
+                    st.info("Press the button to find the sticker location.")
+
+        with col_view:
+            if not stk_placements:
+                st.info("Configure the stickers (or run the search) to see the result.")
+            else:
+                stk_attack = stickers.UniversalSticker(stk_net, None, {"colors": stk_colors},
+                                                       mean=stk_mean, std=stk_std)
+                sign_info = sticker_samples[stk_sign_key]
+                clean_t = preprocess_image(Image.open(sign_info["path"]).convert("RGB")).to(stk_device)
+                sticker_t = stk_attack.apply(clean_t, stk_placements)
+                with torch.no_grad():
+                    clean_p = torch.softmax(stk_net(clean_t), dim=1).squeeze(0).cpu()
+                    stick_p = torch.softmax(stk_net(sticker_t), dim=1).squeeze(0).cpu()
+                clean_id, stick_id = int(clean_p.argmax()), int(stick_p.argmax())
+                clean_name = GTSRB_CLASSES.get(clean_id, f"Class {clean_id}")
+                stick_name = GTSRB_CLASSES.get(stick_id, f"Class {stick_id}")
+
+                st.markdown(f"**Ground truth:** {sign_info['class_name']} (ID {sign_info['class_id']})")
+                img_a, img_b = st.columns(2)
+                with img_a:
+                    st.markdown("##### **Clean Sign**")
+                    st.image(tensor_to_display_image(clean_t), use_container_width=True, clamp=True)
+                    st.markdown(f"**Prediction:** `{clean_name}`")
+                    st.markdown(f"**Confidence:** `{float(clean_p[clean_id]) * 100:.1f}%`")
+                with img_b:
+                    st.markdown("##### **With Sticker(s)**")
+                    st.image(tensor_to_display_image(sticker_t), use_container_width=True, clamp=True)
+                    st.markdown(f"**Prediction:** `{stick_name}`")
+                    st.markdown(f"**Confidence:** `{float(stick_p[stick_id]) * 100:.1f}%`")
+
+                if stick_id != sign_info["class_id"]:
+                    st.error(f"❌ **Model fooled!** Predicted: {stick_name}")
+                else:
+                    st.success("✅ The model still classifies this sign correctly.")
+
+                # the same stickers on every preset sign (this is what makes the attack universal)
+                st.markdown("#### 🌍 **Same stickers on every preset sign**")
+                all_items = list(sticker_samples.items())
+                all_xs = torch.cat([preprocess_image(Image.open(v["path"]).convert("RGB"))
+                                    for _, v in all_items]).to(stk_device)
+                all_true = [v["class_id"] for _, v in all_items]
+                with torch.no_grad():
+                    all_clean = stk_net(all_xs).argmax(dim=1).cpu().tolist()
+                    all_stick = stk_net(stk_attack.apply(all_xs, stk_placements)).argmax(dim=1).cpu().tolist()
+                rows, fooled, usable = [], 0, 0
+                for (name, _), true_id, c_id, s_id in zip(all_items, all_true, all_clean, all_stick):
+                    if c_id == true_id:
+                        usable += 1
+                        fooled += int(s_id != true_id)
+                    rows.append({"Sign": name,
+                                 "Clean prediction": GTSRB_CLASSES.get(c_id, str(c_id)),
+                                 "With sticker": GTSRB_CLASSES.get(s_id, str(s_id)),
+                                 "Fooled": "yes" if (c_id == true_id and s_id != true_id) else "no"})
+                st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+                st.caption(f"Fooled {fooled} of {usable} signs that the model classifies correctly without stickers. "
+                           "This is a digital simulation on 32x32 crops, not a physical-world test.")
 
 # =============================================================================
 # PAGE 3: EXPERIMENT REPORTS & ANALYTICS

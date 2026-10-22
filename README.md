@@ -18,6 +18,7 @@ The dataset of GTSRB is taken from https://github.com/tomlawrenceuk/GTSRB-Datalo
 3. run from the project directory: "python experiments.py --dataset-name traffic_signs"
 
 for MNIST - "python experiments.py --dataset-name MNIST".
+for dashboard - Streamlit app.py .
 
 see configs.py to set configs. The configurations on this reposetory are tested and match the to the report.  
 

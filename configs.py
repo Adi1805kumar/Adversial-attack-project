@@ -107,3 +107,17 @@ configs_dict = {
     }
 
 }
+
+
+# Universal sticker attack. sizes are (height, width) in pixels; region = (top, left, bottom, right) is the area
+# where stickers may be placed (the "merged mask" of the paper - for GTSRB crops the centre lies on the sign).
+sticker_normalization = {
+    "MNIST": ((0.0,), (1.0,)),  # MNIST is not normalized
+    "traffic_signs": ((0.3403, 0.3121, 0.3214), (0.2724, 0.2608, 0.2669)),  # same numbers as data_transform
+}
+sticker_hps = {
+    "MNIST": {"sizes": [(4, 4), (6, 6), (8, 8), (10, 10)], "region": (4, 4, 24, 24), "stride": 2},
+    "traffic_signs": {"sizes": [(6, 6), (8, 8), (10, 10), (12, 12)], "region": (6, 6, 26, 26), "stride": 2},
+}
+sticker_color_variants = [["black"], ["white"], ["black", "white"]]  # one entry = one sticker
+sticker_search_images = 500  # correctly classified images used to search the sticker location
